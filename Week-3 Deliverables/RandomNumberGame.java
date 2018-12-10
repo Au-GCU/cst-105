@@ -1,3 +1,4 @@
+
 // Jack Hall - CST-105 - This code was written by me for class.
 
 import java.util.Scanner;
@@ -15,7 +16,8 @@ public class RandomNumberGame {
 
 		int attempts = 1;
 
-		// initialize values to prevent compile error because we don't assign them "real" values until the selection statements
+		// initialize values to prevent compile error because we don't assign them
+		// "real" values until the selection statements
 		int guess = 0;
 		int lowGuess = 0;
 		int highGuess = 10000;
@@ -26,14 +28,15 @@ public class RandomNumberGame {
 		// Conditional logic
 		while (guess != randomNumber) {
 
-			// Change prompt if other than initial prompt
+			/* Change prompt if other than initial prompt. This section also controls the
+			   range of numbers in each prompt. */
 			if (attempts > 1) {
 				if (lowGuess == 0) {
-					System.out.print("Enter a guess between " +	(lowGuess + 1) + " and " + (highGuess - 1) + " : ");
-				} else if (highGuess == 10000){
-					System.out.print("Enter a guess between " +	(lowGuess + 1) + " and " + (highGuess) + " : ");
+					System.out.print("Enter a guess between " + (lowGuess + 1) + " and " + (highGuess - 1) + " : ");
+				} else if (highGuess == 10000) {
+					System.out.print("Enter a guess between " + (lowGuess + 1) + " and " + (highGuess) + " : ");
 				} else if (lowGuess != 0 && highGuess != 10000) {
-					System.out.print("Enter a guess between " +	(lowGuess + 1) + " and " + (highGuess - 1) + " : ");
+					System.out.print("Enter a guess between " + (lowGuess + 1) + " and " + (highGuess - 1) + " : ");
 				} else {
 					// nothing should be allowed to get to this point
 				}
