@@ -27,9 +27,17 @@ public class RandomNumberGame {
 		while (guess != randomNumber) {
 
 			// Change prompt if other than initial prompt
-			if (attempts > 0)
-				System.out.print("Enter a guess between " + lowGuess + " and " + highGuess + " : ");
-
+			if (attempts > 1) {
+				if (lowGuess == 0) {
+					System.out.print("Enter a guess between " +	(lowGuess + 1) + " and " + (highGuess - 1) + " : ");
+				} else if (highGuess == 10000){
+					System.out.print("Enter a guess between " +	(lowGuess + 1) + " and " + (highGuess) + " : ");
+				} else if (lowGuess != 0 && highGuess != 10000) {
+					System.out.print("Enter a guess between " +	(lowGuess + 1) + " and " + (highGuess - 1) + " : ");
+				} else {
+					// nothing should be allowed to get to this point
+				}
+			}
 			// Accept user input for guess
 			guess = input.nextInt();
 
@@ -38,7 +46,7 @@ public class RandomNumberGame {
 
 				// Logic around actual guesses
 				if (guess == randomNumber) {
-					System.out.println("You WIN. It took you " + attempts + " tries.");
+					System.out.println("You WIN. It took you " + attempts + " guesses.");
 				} else if (guess > randomNumber) {
 					System.out.println("LOWER");
 				} else if (guess < randomNumber) {
