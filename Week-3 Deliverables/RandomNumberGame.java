@@ -1,3 +1,5 @@
+// Jack Hall - CST-105 - This code was written by me for class.
+
 import java.util.Scanner;
 
 public class RandomNumberGame {
@@ -11,28 +13,30 @@ public class RandomNumberGame {
 
 		// Set up guess index/counter
 
-		int attempts = 0;
+		int attempts = 1;
 
-		// initialize guess and lastGuess as 0 to prevent compile error
+		// initialize values to prevent compile error because we don't assign them "real" values until the selection statements
 		int guess = 0;
-		int lastGuess = 0;
-		
+		int lowGuess = 0;
+		int highGuess = 10000;
+
 		// Initial prompt
 		System.out.print("Enter a guess between 1 and 10000: ");
-		
-		
+
 		// Conditional logic
 		while (guess != randomNumber) {
 
 			// Change prompt if other than initial prompt
 			if (attempts > 0)
-				System.out.print("Enter a guess between " + lastGuess + " and " + guess + " : ");
-			
+				System.out.print("Enter a guess between " + lowGuess + " and " + highGuess + " : ");
+
 			// Accept user input for guess
 			guess = input.nextInt();
 
+			// Checks to make sure user supplied value is within correct range
 			if ((guess >= 1) && (guess <= 10000)) {
-				
+
+				// Logic around actual guesses
 				if (guess == randomNumber) {
 					System.out.println("You WIN. It took you " + attempts + " tries.");
 				} else if (guess > randomNumber) {
@@ -40,11 +44,21 @@ public class RandomNumberGame {
 				} else if (guess < randomNumber) {
 					System.out.println("HIGHER");
 				}
+
+				// handle entries outside of the requested range
 			} else {
 				System.out.println("Invalid entry.");
 			}
+
+			// add to attempt counter (increment) after each attempt
 			attempts++;
-			guess = lastGuess;
+
+			// keep track of low and high guesses for use in subsequent prompts
+			if (guess < randomNumber)
+				lowGuess = guess;
+			else
+				highGuess = guess;
+
 		}
 
 	}
