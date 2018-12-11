@@ -1,0 +1,5 @@
+General Class Repository:
+https://github.com/jackvhall/cst-105/
+
+This specific assignment:
+https://github.com/jackvhall/cst-105/tree/master/Week-3%20Deliverables
