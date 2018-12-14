@@ -59,6 +59,8 @@ public class PigLatinGenerator {
 				}
 			}
 
+			// convert to pig Latin section: first if handles words starting with vowels
+			// else block handles all other words
 			if (firstVowel == 0) {
 				System.out.print(leadWord);
 				System.out.printf("%13s\n", leadWord.toUpperCase() + "WAY");
@@ -67,10 +69,17 @@ public class PigLatinGenerator {
 				String startString = leadWord.substring(firstVowel, wordLength);
 				String endString = leadWord.substring(start, firstVowel) + "ay";
 
+				// handling for if user enters a . to end sentence - this will remove it, but it
+				// shifts formatted printf output by 1
+				if (startString.indexOf(".") != -1) {
+					startString = startString.substring(start, startString.indexOf("."));
+				}
+
 				// display results in formatted, tabular form.
 				System.out.print(leadWord);
 				System.out.printf("%12s\n", startString.toUpperCase() + endString.toUpperCase());
 
+				// reassign sentence.length
 				sentenceLength = sentence.length();
 			}
 		} while (sentenceLength > 0);
