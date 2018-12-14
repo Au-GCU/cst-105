@@ -26,6 +26,7 @@ public class PigLatinGenerator {
 		// obtain input
 		System.out.println("Enter sentence for translation to pig latin: ");
 		String sentence = input.nextLine();
+		sentence = sentence + " ";
 
 		// determine spaces in string
 		int whiteSpace = sentence.indexOf(' ');
@@ -35,46 +36,42 @@ public class PigLatinGenerator {
 
 		do {
 
-			// must use this if to handle absence of white space when only 1 word left in
-			// sentence
-			if (whiteSpace != -1) {
-				// separate lead word from the remainder of sentence
-				String leadWord = sentence.substring(0, whiteSpace);
-				String restOfSentence = sentence.substring(whiteSpace + 1);
+			// separate lead word from the remainder of sentence
+			String leadWord = sentence.substring(0, whiteSpace);
+			String restOfSentence = sentence.substring(whiteSpace + 1);
 
-				// reassign the remainder of the sentence to sentence and get new position of
-				// white space in new sentence.
-				sentence = restOfSentence;
-				whiteSpace = sentence.indexOf(' ');
+			// reassign the remainder of the sentence to sentence and get new position of
+			// white space in new sentence.
+			sentence = restOfSentence;
+			whiteSpace = sentence.indexOf(' ');
 
-				// loop that obtains position of first vowel encountered and then determines
-				// length of word.
-				for (int count = 0; count < leadWord.length(); count++) {
-					char vowel = Character.toUpperCase(leadWord.charAt(count));
+			// loop that obtains position of first vowel encountered and then determines
+			// length of word.
+			for (int count = 0; count < leadWord.length(); count++) {
+				char vowel = Character.toUpperCase(leadWord.charAt(count));
 
-					if (vowel == a || vowel == e || vowel == i || vowel == o || vowel == u) {
+				if (vowel == a || vowel == e || vowel == i || vowel == o || vowel == u) {
 
-						firstVowel = count;
-						wordLength = leadWord.length();
-						break;
+					firstVowel = count;
+					wordLength = leadWord.length();
+					break;
 
-					}
 				}
+			}
 
-				if (firstVowel == 0) {
-					System.out.print(leadWord);
-					System.out.printf("%13s\n", leadWord.toUpperCase() + "WAY");
-				} else {
-					// use position of first vowel obtained in for-loop to divide word appropriately
-					String startString = leadWord.substring(firstVowel, wordLength);
-					String endString = leadWord.substring(start, firstVowel) + "ay";
+			if (firstVowel == 0) {
+				System.out.print(leadWord);
+				System.out.printf("%13s\n", leadWord.toUpperCase() + "WAY");
+			} else {
+				// use position of first vowel obtained in for-loop to divide word appropriately
+				String startString = leadWord.substring(firstVowel, wordLength);
+				String endString = leadWord.substring(start, firstVowel) + "ay";
 
-					// display results in formatted, tabular form.
-					System.out.print(leadWord);
-					System.out.printf("%12s\n", startString.toUpperCase() + endString.toUpperCase());
+				// display results in formatted, tabular form.
+				System.out.print(leadWord);
+				System.out.printf("%12s\n", startString.toUpperCase() + endString.toUpperCase());
 
-					sentenceLength = sentence.length();
-				}
+				sentenceLength = sentence.length();
 			}
 		} while (sentenceLength > 0);
 
