@@ -1,9 +1,22 @@
+/**
+ * @author Jack Hall
+ * @version 1.0.0
+ * @since December 11, 2018
+ * 
+ * Jack Hall - CST-105 - This code was written by me for class.
+ */
 
-// Jack Hall - CST-105 - This code was written by me for class.
 import java.io.*;
-import java.util.Scanner;
 
 public class PigLatinGenerator {
+	
+	   /**
+	   * This is the main method method. All code is executed here without external class.
+	   * @param args Unused.
+	   * @return Nothing.
+	   * @exception IOException On input error.
+	   * @see IOException
+	   */
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
