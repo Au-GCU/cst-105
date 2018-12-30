@@ -2,8 +2,8 @@
  * @author Jack Hall
  * @course CST-105
  * @professor Amr Elchouemi
- * <p>
- * This code was written by me for class - week 7.
+ *            <p>
+ *            This code was written by me for class - week 7.
  * @since 12-26-2018
  */
 public class Player {
@@ -13,25 +13,56 @@ public class Player {
 	private String position;
 	private String collegeYear;
 	private int jerseyNumber;
-	private int weightInPounds;
-	private int heightInInches;
+	private int weight;
+	private int height;
 	private int age;
 	private int passingCompletions;
 	private int passingAttempts;
 
-	// constructor
-	public Player(String name, String college) {
+	// constructors
+	
+	// with arguments
+	public Player(String name, String college, String position, String collegeYear, int jerseyNumber, int weight,
+			int height, int age, int passingCompletions, int passingAttempts) {
 
-		fullName = name;
-		collegeAcronym = college;
+		this.fullName = name;
+		this.collegeAcronym = college;
+		this.position = position;
+		this.collegeYear = collegeYear;
+		this.jerseyNumber = jerseyNumber;
+		this.weight = weight;
+		this.height = height;
+		this.age = age;
+		this.passingCompletions = passingCompletions;
+		this.passingAttempts = passingAttempts;
 
 	}
 
+	// without arguments
 	public Player() {
-		// no arguments?
+		fullName = "";
+		collegeAcronym = "";
+		position = "";
+		collegeYear = "";
+
 	}
 
-	// setter methods
+	// basic mutator
+	public void setPlayer(String name, String college, String position) {
+		this.fullName = name;
+		this.collegeAcronym = college;
+		this.position = position;
+	}
+
+	// other setter methods
+	public void setFullname(String name) {
+		this.fullName = name;
+	}
+
+	public void setCollegeName(String college) {
+		this.collegeAcronym = college;
+	}
+
 	public void setPosition(String pos) {
 		this.position = pos;
 	}
@@ -41,11 +72,11 @@ public class Player {
 	}
 
 	public void setWeight(int weight) {
-		this.weightInPounds = weight;
+		this.weight = weight;
 	}
 
 	public void setHeight(int height) {
-		this.heightInInches = height;
+		this.height = height;
 	}
 
 	public void setAge(int age) {
@@ -69,6 +100,10 @@ public class Player {
 		return fullName;
 	}
 
+	public String getCollege() {
+		return collegeAcronym;
+	}
+
 	public String getPosition() {
 		return position;
 	}
@@ -78,11 +113,11 @@ public class Player {
 	}
 
 	public int getWeight() {
-		return weightInPounds;
+		return weight;
 	}
 
 	public int getHeight() {
-		return heightInInches;
+		return height;
 	}
 
 	public int getAge() {
@@ -105,6 +140,18 @@ public class Player {
 		double result = (1.0 * passingCompletions) / passingAttempts * 100.0;
 		return result;
 	}
+	public double getBodyMassIndex() {
+		// formula here is kg/m^2
+		//convert pounds to kg
+		double weightInKg = weight * 0.453592;
+		
+		//convert inches to meters
+		double heightInMeters = height * 0.0254;
+		
+		// compute BMI
+		double result = weightInKg / (Math.pow(heightInMeters, 2));
+		return result;
+	}
 
 	public void printStats() {
 		System.out.println(this.fullName + " from " + this.collegeAcronym + "\nPlayer is " + this.getHeight()
@@ -114,9 +161,9 @@ public class Player {
 	@Override
 	public String toString() {
 		return "Player [fullName=" + fullName + ", collegeAcronym=" + collegeAcronym + ", position=" + position
-				+ ", collegeYear=" + collegeYear + ", jerseyNumber=" + jerseyNumber + ", weightInPounds="
-				+ weightInPounds + ", heightInInches=" + heightInInches + ", age=" + age + ", passingCompletions="
-				+ passingCompletions + ", passingAttempts=" + passingAttempts + "]";
+				+ ", collegeYear=" + collegeYear + ", jerseyNumber=" + jerseyNumber + ", weight=" + weight + ", height="
+				+ height + ", age=" + age + ", passingCompletions=" + passingCompletions + ", passingAttempts="
+				+ passingAttempts + "]";
 	}
-	
+
 }
