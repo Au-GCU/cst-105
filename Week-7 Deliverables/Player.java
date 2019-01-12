@@ -18,9 +18,12 @@ public class Player {
 	private int age;
 	private int passingCompletions;
 	private int passingAttempts;
+	
+	// static player count
+	private static int playerCount = 0;
 
 	// constructors
-	
+
 	// with arguments
 	public Player(String name, String college, String position, String collegeYear, int jerseyNumber, int weight,
 			int height, int age, int passingCompletions, int passingAttempts) {
@@ -35,16 +38,14 @@ public class Player {
 		this.age = age;
 		this.passingCompletions = passingCompletions;
 		this.passingAttempts = passingAttempts;
+		playerCount++;
 
 	}
-
+	
 	// without arguments
 	public Player() {
-		fullName = "";
-		collegeAcronym = "";
-		position = "";
-		collegeYear = "";
-
+		this(null, null, null, null, 0, 0, 0, 0, 0, 0);
+		 // does this add 2 to playerCount if I leave in playerCount++?
 	}
 
 	// basic mutator
@@ -124,7 +125,7 @@ public class Player {
 		return age;
 	}
 
-	public int getJerseyNumber() {
+	public int getNumber() {
 		return jerseyNumber;
 	}
 
@@ -140,22 +141,22 @@ public class Player {
 		double result = (1.0 * passingCompletions) / passingAttempts * 100.0;
 		return result;
 	}
+
 	public double getBodyMassIndex() {
 		// formula here is kg/m^2
-		//convert pounds to kg
+		// convert pounds to kg
 		double weightInKg = weight * 0.453592;
-		
-		//convert inches to meters
+
+		// convert inches to meters
 		double heightInMeters = height * 0.0254;
-		
+
 		// compute BMI
 		double result = weightInKg / (Math.pow(heightInMeters, 2));
 		return result;
 	}
-
-	public void printStats() {
-		System.out.println(this.fullName + " from " + this.collegeAcronym + "\nPlayer is " + this.getHeight()
-				+ " inches tall and " + this.getWeight() + " lbs\n" + this.getAge() + " years old");
+	
+	public static int getPlayerCount() {
+		return playerCount;
 	}
 
 	@Override
@@ -165,5 +166,6 @@ public class Player {
 				+ height + ", age=" + age + ", passingCompletions=" + passingCompletions + ", passingAttempts="
 				+ passingAttempts + "]";
 	}
+
 
 }
