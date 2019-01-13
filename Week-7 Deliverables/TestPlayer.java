@@ -43,7 +43,7 @@ public class TestPlayer {
 		Player player2 = new Player("Dwayne Johnson", "GCU", "RB", "Sophomore", 02, 225, 77, 23, 600, 425);
 
 		// utilize overwritten toString method
-		System.out.println(player2);
+		System.out.println(player2.toString());
 
 		// reset some of the variables with setter methods
 		player2.setCollegeYear("junior");

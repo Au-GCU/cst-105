@@ -19,17 +19,28 @@ public class TestPlayerManager {
 		jack.createPlayers();
 
 		System.out.println(jack.toString());
+		
+		System.out.println();
 
 		// display all players toString using this.playerList.get(i) in a for loop
 		jack.displayPlayers();
 
-		// do I hard code the values for the players? Randomly generate? 
-		// main question is still whether I make the playerList ArrayList public/private
-		// and/or static.
-		// 
+		// change some values for the PlayerManager object using setters
 		
+		jack.setFullName("John Doe");
+		jack.setTeamName("Eagles");
+		jack.setSeedNumber(12);
 		
+		System.out.println();
+		
+		// call individual values using getters and display on console
+		System.out.println("The Team Manager is " + jack.getFullName());
+		System.out.println(jack.getFullName() + "'s team is the " + jack.getTeamName());
+		System.out.println("Their seed number for the draft is " + jack.getSeedNumber());
 
+		// get information on a specific players using getPlayer method
+		System.out.println("\nThe stats for player 4 are as follows\n" + jack.getPlayer(4));
+		System.out.println("\nThe stats for player 2 are as follows\n" + jack.getPlayer(2));
 	}
 
 }

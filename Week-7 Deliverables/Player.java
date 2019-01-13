@@ -19,8 +19,6 @@ public class Player {
 	private int passingCompletions;
 	private int passingAttempts;
 	
-	// static player count
-	private static int playerCount = 0;
 
 	// constructors
 
@@ -38,7 +36,6 @@ public class Player {
 		this.age = age;
 		this.passingCompletions = passingCompletions;
 		this.passingAttempts = passingAttempts;
-		playerCount++;
 
 	}
 	
@@ -48,7 +45,7 @@ public class Player {
 		 // does this add 2 to playerCount if I leave in playerCount++?
 	}
 
-	// basic mutator
+	// basic mutator / multi-parameter setter
 	public void setPlayer(String name, String college, String position) {
 		this.fullName = name;
 		this.collegeAcronym = college;
@@ -155,10 +152,7 @@ public class Player {
 		return result;
 	}
 	
-	public static int getPlayerCount() {
-		return playerCount;
-	}
-
+	// overridden toString method including all data fields
 	@Override
 	public String toString() {
 		return "Player [fullName=" + fullName + ", collegeAcronym=" + collegeAcronym + ", position=" + position
