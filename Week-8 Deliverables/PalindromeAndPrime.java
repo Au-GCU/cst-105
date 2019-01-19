@@ -15,12 +15,12 @@ public class PalindromeAndPrime {
 		// TODO Auto-generated method stub
 
 		int count = 0;
-		for (int i = 0; count < 100; i++) {
+		for (int i = 0; i < 100000; i++) {
 
 			if (isPrime(i) && isPalindrome(i)) {
-				System.out.printf("%10d", i);
+				System.out.printf("%12d", i);
 				count++;
-				if (count % 10 == 0 && i != 0)
+				if (count % 4 == 0 && i != 0)
 					System.out.println();
 
 			}
