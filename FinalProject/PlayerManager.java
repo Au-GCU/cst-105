@@ -112,6 +112,10 @@ public class PlayerManager {
 		for (int i = 0; i < playerList.size(); i++)
 			System.out.println(this.playerList.get(i));
 	}
+	public int getPlayerListCount() {
+		int playerListSize = playerList.size();
+		return playerListSize;
+	}
 
 	// override the toString method and use @override annotation to force compiler
 	// to ensure overridden method

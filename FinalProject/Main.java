@@ -6,15 +6,12 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,10 +30,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         // create all players
         playerManager.createPlayers("all");
-        // set HBox as header/banner
-        pane.setTop(getHbox());
 
-        // set up left navigation
+
+        // This VBox defines the left navigation
         VBox nav = new VBox(15);
         // create controls for vBox
         Button homeButton = new Button("Home");
@@ -48,9 +44,14 @@ public class Main extends Application {
         nav.setStyle("-fx-background-color: lightgray");
         nav.getChildren().addAll(homeButton, viewAllPlayersButton, viewMyRosterButton, backButton);
 
-        pane.setLeft(nav);
-        // Create start button and set other button events
+
+        // Create start button
         Button startButton = new Button("Create Players");
+
+        //
+
+
+        // EVENT HANDLERS
         startButton.setOnAction(e -> {
             pane.setCenter(PrimaryPaneClass.showInfo("Welcome, Player Manager! \n Your players have been created. \n" +
                     "Use the navigation on the left hand side of this window to play!"));
@@ -59,9 +60,7 @@ public class Main extends Application {
         homeButton.setOnAction(e -> {pane.setCenter(PrimaryPaneClass.showInfo(
                 "Here's the home screen."
         ));});
-        viewAllPlayersButton.setOnAction(e -> {pane.setCenter(PrimaryPaneClass.showInfo(
-                "Here's all of the players"
-        ));});
+        viewAllPlayersButton.setOnAction(e -> {pane.setCenter(getPlayersPane());});
         viewMyRosterButton.setOnAction(e -> {pane.setCenter(PrimaryPaneClass.showInfo(
                 "Here's your current roster"
         ));});
@@ -69,12 +68,11 @@ public class Main extends Application {
                 "Here's your last screen"
         ));});
 
+        // Set panes
+        pane.setTop(getHbox());
+        pane.setLeft(nav);
         pane.setCenter(startButton);
-        //Add event handler to start button
 
-        // Add to StackPane
-
-        //pane.setBottom(btStart);
 
         // Create new scene to hold pane and place it in the stage
 
@@ -86,25 +84,112 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    // This HBox defines the header/banner
     private HBox getHbox() {
+        // create the pane to hold the nodes and specify properties and styles
         HBox header = new HBox(15);
+        header.setPadding(new Insets(15, 15, 15, 15));
+        header.setAlignment(Pos.CENTER_LEFT);
+        header.setStyle("-fx-background-color: lightgray");
+
         // create logo/icon and specify dimensions, place in view
         Image icon = new Image("https://i.ibb.co/93mYBhS/football-icon.png");
         ImageView iconView = new ImageView(icon);
         iconView.setFitHeight(80);
         iconView.setFitWidth(130);
+
         // add icon to header
-        header.setPadding(new Insets(15, 15, 15, 15));
-        header.setAlignment(Pos.CENTER_LEFT);
-        header.setStyle("-fx-background-color: lightgray");
         header.getChildren().add(iconView);
+
+        // Create banner label and specify font, then add to pane
         Label headerLabel = new Label("Welcome to NFL Draft in Java!");
         headerLabel.setFont(Font.font("Times New Roman", FontWeight.BOLD, FontPosture.ITALIC, 20));
         header.getChildren().add(headerLabel);
+
+        // return pane
         return header;
     }
 
+    // pane method for getting all players
+    // there is no way I can turn in this massive method. I have to figure out something else.
+    // also I need to break up the playerPane.add() statements. They are barely readable with so many nested statements.
+    private GridPane getPlayersPane() {
+        // Buttons for adding players
+/*      *** I MAY HAVE TO KEEP THESE BECAUSE I CANT .setOnAction for anonymous button objects... I don't think. ****
 
+        Button addPlayer1 = new Button("Add");
+        Button addPlayer2 = new Button("Add");
+        Button addPlayer3 = new Button("Add");
+        Button addPlayer4 = new Button("Add");
+        Button addPlayer5 = new Button("Add");
+        Button addPlayer6 = new Button("Add");
+
+        // Buttons for viewing stats
+        Button statsPlayer1 = new Button("Full Stats");
+        Button statsPlayer2 = new Button("Full Stats");
+        Button statsPlayer3 = new Button("Full Stats");
+        Button statsPlayer4 = new Button("Full Stats");
+        Button statsPlayer5 = new Button("Full Stats");
+        Button statsPlayer6 = new Button("Full Stats");*/
+
+        // create players grid and set properties
+        GridPane playersPane = new GridPane();
+        playersPane.setAlignment(Pos.CENTER);
+        playersPane.setVgap(10);
+        playersPane.setHgap(10);
+
+        // Label objects for header rows
+        Label nameLabel = new Label("Name");
+        nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 20));
+        Label positionLabel = new Label("Position");
+        positionLabel.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 20));
+        Label heightLabel = new Label("Height");
+        heightLabel.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 20));
+        Label weightLabel = new Label("Weight");
+        weightLabel.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 20));
+        Label ageLabel = new Label("Age");
+        ageLabel.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 20));
+
+        // header rows
+
+        playersPane.add(nameLabel, 0, 0);
+        playersPane.add(positionLabel, 1, 0);
+        playersPane.add(heightLabel, 2, 0);
+        playersPane.add(weightLabel, 3, 0);
+        playersPane.add(ageLabel, 4, 0);
+
+        // populate players rows
+        int row = 1;
+        // for-loop getting each player object and calling getter methods in PlayerManager
+        for (int i = 0; i < playerManager.getPlayerListCount(); i++) {
+            playersPane.add(new Label(playerManager.getPlayer(i).getPlayerName()), 0, row);
+            playersPane.add(new Label(playerManager.getPlayer(i).getPosition()), 1, row);
+            playersPane.add(new Label(Integer.toString(playerManager.getPlayer(i).getHeight())), 2, row);
+            playersPane.add(new Label(Integer.toString(playerManager.getPlayer(i).getWeight())), 3, row);
+            playersPane.add(new Label(Integer.toString(playerManager.getPlayer(i).getAge())), 4, row);
+            playersPane.add(new Button("Add"), 5, row);
+            playersPane.add(new Button("Full Stats"), 6, row);
+            row++;
+            System.out.println(row);
+        }
+
+        return playersPane;
+
+    }
+    private GridPane getFullStatPane(int i) {
+        GridPane pane = new GridPane();
+        pane.setHgap(30);
+        pane.setVgap(10);
+        pane.add(new Label("Name"), 0, 0);
+
+
+        return pane;
+    }
+
+    /**
+     * Main method that launches program for IDEs - not required for launching from console
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
@@ -114,7 +199,7 @@ public class Main extends Application {
 // I then use this VBox to present content in the main area (pane.setCenter() in the main BorderPane).
 class PrimaryPaneClass {
     private String info;
-    private VBox lastPane; // still have to figure out the "back" functionality
+    private VBox lastPane; // still have to figure out the "back" button functionality
 
     public PrimaryPaneClass(String info) {
         this.info = info;
@@ -122,6 +207,7 @@ class PrimaryPaneClass {
         Text text = new Text(info);
         pane.getChildren().add(text);
     }
+
     public static VBox showInfo(String info) {
         VBox pane = new VBox(15);
         pane.setPadding(new Insets(15));
