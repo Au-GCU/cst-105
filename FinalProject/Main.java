@@ -24,7 +24,7 @@ public class Main extends Application {
     // Create StackPane to hold primary background image for start screen
     BorderPane pane = new BorderPane();
     PlayerManager playerManager = new PlayerManager();
-
+    VBox playersPane = new VBox(10);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -48,7 +48,10 @@ public class Main extends Application {
         // Create start button
         Button startButton = new Button("Create Players");
 
-        //
+        // Configure View All Players Pane
+        Button backButtonPlayerPane = new Button("Back");
+        playersPane.getChildren().add(getPlayersPane());
+        playersPane.getChildren().add(backButtonPlayerPane);
 
 
         // EVENT HANDLERS
@@ -57,16 +60,25 @@ public class Main extends Application {
                     "Use the navigation on the left hand side of this window to play!"));
         });
 
-        homeButton.setOnAction(e -> {pane.setCenter(PrimaryPaneClass.showInfo(
-                "Here's the home screen."
-        ));});
-        viewAllPlayersButton.setOnAction(e -> {pane.setCenter(getPlayersPane());});
-        viewMyRosterButton.setOnAction(e -> {pane.setCenter(PrimaryPaneClass.showInfo(
-                "Here's your current roster"
-        ));});
-        backButton.setOnAction(e -> {pane.setCenter(PrimaryPaneClass.showInfo(
-                "Here's your last screen"
-        ));});
+        homeButton.setOnAction(e -> {
+            pane.setCenter(PrimaryPaneClass.showInfo(
+                    "Here's the home screen."
+            ));
+        });
+        viewAllPlayersButton.setOnAction(e -> {
+            pane.setCenter(getPlayersPane());
+        });
+        viewMyRosterButton.setOnAction(e -> {
+            pane.setCenter(PrimaryPaneClass.showInfo(
+                    "Here's your current roster"
+            ));
+        });
+        backButton.setOnAction(e -> {
+            pane.setCenter(PrimaryPaneClass.showInfo(
+                    "Here's your last screen"
+            ));
+        });
+        backButtonPlayerPane.setOnAction(e -> pane.setCenter(getPlayersPane()));
 
         // Set panes
         pane.setTop(getHbox());
@@ -170,24 +182,74 @@ public class Main extends Application {
             playersPane.add(new Button("Add"), 5, row);
             playersPane.add(new Button("Full Stats"), 6, row);
             row++;
-            System.out.println(row);
         }
 
         return playersPane;
 
     }
+
+
+    // set up "view full stats" pane
     private GridPane getFullStatPane(int i) {
         GridPane pane = new GridPane();
         pane.setHgap(30);
         pane.setVgap(10);
         pane.add(new Label("Name"), 0, 0);
+        pane.add(new Label("College"), 0, 1);
+        pane.add(new Label("Position"), 0, 2);
+        pane.add(new Label("Year"), 0, 3);
+        pane.add(new Label("Jersey Number"), 0, 4);
+        pane.add(new Label("Weight in Pounds"), 0, 5);
+        pane.add(new Label("Height in Inches"), 0, 6);
+        pane.add(new Label("Age"), 0, 7);
+        pane.add(new Label("Seasons Played"), 0, 8);
+        if (playerManager.getPlayer(i) instanceof OffensivePlayer) {
+            pane.add(new Label("Passing Completions"), 0, 9);
+            pane.add(new Label("Passing Attempts"), 0, 10);
+            pane.add(new Label("Touchdowns"), 0, 11);
+            pane.add(new Label("Interceptions"), 0, 12);
+            pane.add(new Label("Yards"), 0, 13);
+        } else if (playerManager.getPlayer(i) instanceof DefensivePlayer) {
+            pane.add(new Label("Tackles"), 0, 9);
+            pane.add(new Label("Sacks"), 0, 10);
+            pane.add(new Label("Forced Fumbles"), 0, 11);
+            pane.add(new Label("Interceptions"), 0, 12);
 
+        } else {
+            pane.getChildren().removeAll();
+            pane.getChildren().add(PrimaryPaneClass.showInfo("You have made an invalid selection"));
+        }
 
+        pane.add(new Text(playerManager.getPlayer(i).getPlayerName()), 1, 0);
+        pane.add(new Text(playerManager.getPlayer(i).getCollege()), 1, 1);
+        pane.add(new Text(playerManager.getPlayer(i).getPosition()), 1, 2);
+        pane.add(new Text(playerManager.getPlayer(i).getCollegeYear()), 1, 3);
+        pane.add(new Text(Integer.toString(playerManager.getPlayer(i).getNumber())), 1, 4);
+        pane.add(new Text(Integer.toString(playerManager.getPlayer(i).getWeight())), 1, 5);
+        pane.add(new Text(Integer.toString(playerManager.getPlayer(i).getHeight())), 1, 6);
+        pane.add(new Text(Integer.toString(playerManager.getPlayer(i).getAge())), 1, 7);
+        pane.add(new Text(Integer.toString(playerManager.getPlayer(i).getSeasonsPlayed())), 1, 8);
+        if (playerManager.getPlayer(i) instanceof OffensivePlayer) {
+            pane.add(new Text(Integer.toString(((OffensivePlayer) playerManager.getPlayer(i)).getPassingCompletions())), 1, 9);
+            pane.add(new Text(Integer.toString(((OffensivePlayer) playerManager.getPlayer(i)).getPassingAttempts())), 1, 10);
+            pane.add(new Text(Integer.toString(((OffensivePlayer) playerManager.getPlayer(i)).getTouchdowns())), 1, 11);
+            pane.add(new Text(Integer.toString(((OffensivePlayer) playerManager.getPlayer(i)).getInterceptions())), 1, 12);
+            pane.add(new Text(Integer.toString(((OffensivePlayer) playerManager.getPlayer(i)).getYards())), 1, 13);
+        } else if (playerManager.getPlayer(i) instanceof DefensivePlayer) {
+            pane.add(new Text(Integer.toString(((DefensivePlayer) playerManager.getPlayer(i)).getTackles())), 1, 9);
+            pane.add(new Text(Integer.toString(((DefensivePlayer) playerManager.getPlayer(i)).getSacks())), 1, 10);
+            pane.add(new Text(Integer.toString(((DefensivePlayer) playerManager.getPlayer(i)).getForcedFumbles())), 1, 11);
+            pane.add(new Text(Integer.toString(((DefensivePlayer) playerManager.getPlayer(i)).getInterceptions())), 1, 12);
+
+        }
         return pane;
     }
 
+
+
     /**
      * Main method that launches program for IDEs - not required for launching from console
+     *
      * @param args
      */
     public static void main(String[] args) {
