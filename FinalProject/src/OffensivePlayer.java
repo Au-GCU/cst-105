@@ -6,7 +6,7 @@
  *            This code was written by me for class - week 7.
  * @since 01-10-2019
  */
-package sample;
+
 public class OffensivePlayer extends Player {
 	private int passingCompletions;
 	private int passingAttempts;

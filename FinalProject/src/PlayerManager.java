@@ -1,4 +1,4 @@
-package sample;
+
 /**
  * @author Jack Hall
  * @course CST-105

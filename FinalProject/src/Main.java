@@ -1,9 +1,15 @@
-package sample;
+/**
+ * @author Jack Hall
+ * @professor Amr Elchouemi
+ * @course CST-105
+ *
+ * This code was written, painstakingly, 100% by me, for this class.
+ * @since 1/26/2019
+ */
+
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -15,30 +21,40 @@ import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.text.Text;
-
+import java.util.ArrayList;
 
 public class Main extends Application {
-    // Create StackPane to hold primary background image for start screen
-    BorderPane pane = new BorderPane();
-    PlayerManager playerManager = new PlayerManager();
-    VBox playersPane = new VBox(10);
+    // Create BorderPane to hold primary background image for start screen
+    private BorderPane pane = new BorderPane();
+
+    // instantiate playerManager that will return player objects
+    private PlayerManager playerManager = new PlayerManager();
+
+    // create a VBox for "View All Players" functionality -> must hold nested panes
+
+    // multiple ArrayLists for controls generated in loops with local variables.
+    private ArrayList<Button> playerListAddButtons = new ArrayList<>();
+    private ArrayList<Button> playerListStatsButtons = new ArrayList<>();
+    private ArrayList<Button> playerRosterRemoveButtons = new ArrayList<>();
+
+    // ArrayList for holding player roster
+    private ArrayList<Player> playerRoster = new ArrayList<>();
+
+    // Global navigation Button objects
+    private Button homeButton = new Button("Home");
+    private Button viewAllPlayersButton = new Button("View All Players");
+    private Button viewMyRosterButton = new Button("View My Roster");
+    private Button backButton = new Button("Back");
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         // create all players
         playerManager.createPlayers("all");
 
-
         // This VBox defines the left navigation
         VBox nav = new VBox(15);
         // create controls for vBox
-        Button homeButton = new Button("Home");
-        Button viewAllPlayersButton = new Button("View All Players");
-        Button viewMyRosterButton = new Button("View My Roster");
-        Button backButton = new Button("Back");
         nav.setAlignment(Pos.CENTER);
         nav.setPadding(new Insets(15, 15, 15, 15));
         nav.setStyle("-fx-background-color: lightgray");
@@ -50,35 +66,30 @@ public class Main extends Application {
 
         // Configure View All Players Pane
         Button backButtonPlayerPane = new Button("Back");
-        playersPane.getChildren().add(getPlayersPane());
-        playersPane.getChildren().add(backButtonPlayerPane);
 
 
-        // EVENT HANDLERS
+        // NAVIGATION EVENT HANDLERS
         startButton.setOnAction(e -> {
-            pane.setCenter(PrimaryPaneClass.showInfo("Welcome, Player Manager! \n Your players have been created. \n" +
-                    "Use the navigation on the left hand side of this window to play!"));
+            pane.setCenter(getHomePane());
+            backButton.setOnAction(f -> pane.setCenter(getHomePane()));
         });
-
         homeButton.setOnAction(e -> {
-            pane.setCenter(PrimaryPaneClass.showInfo(
-                    "Here's the home screen."
-            ));
+            pane.setCenter(getHomePane());
         });
-        viewAllPlayersButton.setOnAction(e -> {
-            pane.setCenter(getPlayersPane());
-        });
+        viewAllPlayersButton.setOnAction(e -> pane.setCenter(getPlayersPane()));
         viewMyRosterButton.setOnAction(e -> {
-            pane.setCenter(PrimaryPaneClass.showInfo(
-                    "Here's your current roster"
-            ));
+            pane.setCenter(getRosterPane());
         });
         backButton.setOnAction(e -> {
             pane.setCenter(PrimaryPaneClass.showInfo(
-                    "Here's your last screen"
+                    "Start navigating the program by clicking on the buttons to the left."
             ));
         });
-        backButtonPlayerPane.setOnAction(e -> pane.setCenter(getPlayersPane()));
+        //backButtonPlayerPane.setOnAction(e -> pane.setCenter(getPlayersPane()));
+
+        backButton.setVisible(true);
+
+
 
         // Set panes
         pane.setTop(getHbox());
@@ -89,7 +100,6 @@ public class Main extends Application {
         // Create new scene to hold pane and place it in the stage
 
         Scene scene = new Scene(pane, 800, 480);
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("NFL Draft Simulator");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
@@ -105,7 +115,7 @@ public class Main extends Application {
         header.setStyle("-fx-background-color: lightgray");
 
         // create logo/icon and specify dimensions, place in view
-        Image icon = new Image("https://i.ibb.co/93mYBhS/football-icon.png");
+        Image icon = new Image("https://i.ibb.co/1Rc0QtW/football-icon.png");
         ImageView iconView = new ImageView(icon);
         iconView.setFitHeight(80);
         iconView.setFitWidth(130);
@@ -126,23 +136,6 @@ public class Main extends Application {
     // there is no way I can turn in this massive method. I have to figure out something else.
     // also I need to break up the playerPane.add() statements. They are barely readable with so many nested statements.
     private GridPane getPlayersPane() {
-        // Buttons for adding players
-/*      *** I MAY HAVE TO KEEP THESE BECAUSE I CANT .setOnAction for anonymous button objects... I don't think. ****
-
-        Button addPlayer1 = new Button("Add");
-        Button addPlayer2 = new Button("Add");
-        Button addPlayer3 = new Button("Add");
-        Button addPlayer4 = new Button("Add");
-        Button addPlayer5 = new Button("Add");
-        Button addPlayer6 = new Button("Add");
-
-        // Buttons for viewing stats
-        Button statsPlayer1 = new Button("Full Stats");
-        Button statsPlayer2 = new Button("Full Stats");
-        Button statsPlayer3 = new Button("Full Stats");
-        Button statsPlayer4 = new Button("Full Stats");
-        Button statsPlayer5 = new Button("Full Stats");
-        Button statsPlayer6 = new Button("Full Stats");*/
 
         // create players grid and set properties
         GridPane playersPane = new GridPane();
@@ -150,6 +143,8 @@ public class Main extends Application {
         playersPane.setVgap(10);
         playersPane.setHgap(10);
 
+
+        // TODO: Break these two sections out into a discreet method and pass GridPane as a parameter so I can populate first row
         // Label objects for header rows
         Label nameLabel = new Label("Name");
         nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 20));
@@ -179,8 +174,24 @@ public class Main extends Application {
             playersPane.add(new Label(Integer.toString(playerManager.getPlayer(i).getHeight())), 2, row);
             playersPane.add(new Label(Integer.toString(playerManager.getPlayer(i).getWeight())), 3, row);
             playersPane.add(new Label(Integer.toString(playerManager.getPlayer(i).getAge())), 4, row);
-            playersPane.add(new Button("Add"), 5, row);
-            playersPane.add(new Button("Full Stats"), 6, row);
+            Button addButton = new Button("Add");
+            playerListAddButtons.add(addButton);
+            final int j = i;
+            final int rowNumber = row;
+            addButton.setOnAction(e -> {
+                playerRoster.add(playerManager.getPlayer(j));
+                playersPane.add(new Text("Added"), 7, rowNumber);
+                pane.setCenter(playersPane);
+            });
+            playersPane.add(addButton, 5, row);
+            Button statsButton = new Button("Full Stats");
+            playerListStatsButtons.add(statsButton);
+            // event handler sets action of "See Full Stats" button and changes action of back button to go to "View All Players" pane
+            statsButton.setOnAction(e -> {
+                pane.setCenter(getFullStatPane(j));
+                backButton.setOnAction(f -> pane.setCenter(getPlayersPane()));
+            });
+            playersPane.add(statsButton, 6, row);
             row++;
         }
 
@@ -194,6 +205,8 @@ public class Main extends Application {
         GridPane pane = new GridPane();
         pane.setHgap(30);
         pane.setVgap(10);
+        pane.setAlignment(Pos.CENTER);
+        pane.setId("fullStatPane");
         pane.add(new Label("Name"), 0, 0);
         pane.add(new Label("College"), 0, 1);
         pane.add(new Label("Position"), 0, 2);
@@ -242,9 +255,63 @@ public class Main extends Application {
             pane.add(new Text(Integer.toString(((DefensivePlayer) playerManager.getPlayer(i)).getInterceptions())), 1, 12);
 
         }
+
         return pane;
     }
 
+    private GridPane getRosterPane() {
+        GridPane rosterPane = new GridPane();
+        rosterPane.setAlignment(Pos.CENTER);
+        rosterPane.setHgap(15);
+        rosterPane.setVgap(15);
+        rosterPane.setPadding(new Insets(20));
+        if (playerRoster.isEmpty() == true) {
+            Text text = new Text("Your roster is currently empty");
+            rosterPane.add(text, 0, 0);
+        } else {
+            rosterPane.add(new Label("Name"), 0, 0);
+            rosterPane.add(new Label("Position"), 1, 0);
+            rosterPane.add(new Label("Height"), 2, 0);
+            rosterPane.add(new Label("Weight"), 3, 0);
+            rosterPane.add(new Label("Age"), 4, 0);
+            int row = 1;
+            for(int i = 0; i < playerRoster.size(); i++) {
+                rosterPane.add(new Text(playerRoster.get(i).getPlayerName()), 0, row);
+                rosterPane.add(new Text(playerRoster.get(i).getPosition()), 1, row);
+                rosterPane.add(new Text(Integer.toString(playerRoster.get(i).getHeight())), 2, row);
+                rosterPane.add(new Text(Integer.toString(playerRoster.get(i).getWeight())), 3, row);
+                rosterPane.add(new Text(Integer.toString(playerRoster.get(i).getAge())), 4, row);
+                Button removeButton = new Button("Remove");
+                playerRosterRemoveButtons.add(removeButton);
+                // event handler sets action of "Remove" button
+                final int j = i; // JavaFX wants a constant for the Lambda?
+                removeButton.setOnAction(e -> {
+                    playerRoster.remove(j);
+                    pane.setCenter(getRosterPane()); // this refreshes the pane after the player is removed.
+                });
+                rosterPane.add(removeButton, 6, row);
+                row++;
+            }
+        }
+        return rosterPane;
+        // roster pane here
+    }
+
+    private StackPane getHomePane() {
+        StackPane homePane = new StackPane();
+        homePane.setAlignment(Pos.CENTER);
+        homePane.setPadding(new Insets(20));
+        homePane.getChildren().add(
+                PrimaryPaneClass.showInfo("Welcome, Player Manager! \n Your players have been created. \n" +
+                        "Use the navigation on the left hand side of this window to play!" +
+                        "\nIf you want to go back at any time, just click the back button." +
+                        "\nThis program was created by Jack Hall for CST-105 class" +
+                        "\nProfessor Amr Elchouemi" +
+                        "\n01/27/2019")
+
+        );
+        return homePane;
+    }
 
 
     /**
@@ -259,6 +326,7 @@ public class Main extends Application {
 
 // all this does is take a String argument in the static method and spit it out in a formatted VBox pane
 // I then use this VBox to present content in the main area (pane.setCenter() in the main BorderPane).
+// This gives me the ability to just provide a string to temporarily fill a pane as I develop this application.
 class PrimaryPaneClass {
     private String info;
     private VBox lastPane; // still have to figure out the "back" button functionality
